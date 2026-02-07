@@ -18,6 +18,7 @@
             --white: #ffffff;
             --shadow: rgba(0, 0, 0, 0.5);
             --success: #4CAF50;
+            --error: #f44336;
         }
         
         * {
@@ -114,7 +115,6 @@
             transition: all 0.3s ease;
             position: relative;
             padding: 5px 0;
-            cursor: pointer;
         }
         
         nav ul li a:hover {
@@ -194,8 +194,8 @@
             font-size: 18px;
             transition: all 0.3s ease;
             animation: fadeIn 1s ease 0.6s both;
-            cursor: pointer;
             border: none;
+            cursor: pointer;
         }
         
         .cta-button:hover {
@@ -277,6 +277,34 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: block;
+        }
+        
+        .upload-image-btn {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary);
+            color: var(--dark);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 10;
+        }
+        
+        .upload-image-btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+        }
+        
+        #imageUpload {
+            display: none;
         }
         
         .about-text {
@@ -314,7 +342,6 @@
             color: var(--primary);
             width: 20px;
             margin-top: 3px;
-            flex-shrink: 0;
         }
         
         .contact-info strong {
@@ -342,7 +369,6 @@
             position: relative;
             overflow: hidden;
             z-index: 1;
-            cursor: pointer;
         }
         
         .service-card::before {
@@ -404,7 +430,6 @@
             background-color: var(--dark-light);
             border-radius: 10px;
             transition: all 0.3s ease;
-            cursor: pointer;
         }
         
         .experience-item:hover {
@@ -421,7 +446,6 @@
             min-width: 150px;
             text-align: center;
             height: fit-content;
-            cursor: default;
         }
         
         .experience-details h3 {
@@ -463,7 +487,6 @@
             color: var(--primary);
             width: 20px;
             margin-top: 3px;
-            flex-shrink: 0;
         }
         
         .contact-details strong {
@@ -487,7 +510,6 @@
             margin-bottom: 8px;
             color: var(--text);
             font-weight: 500;
-            cursor: pointer;
         }
         
         .form-group input,
@@ -501,7 +523,6 @@
             color: var(--text);
             font-family: 'Montserrat', sans-serif;
             transition: all 0.3s ease;
-            cursor: pointer;
         }
         
         .form-group input:focus,
@@ -530,6 +551,37 @@
             box-shadow: 0 5px 15px var(--shadow);
         }
         
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 5px;
+            font-weight: 500;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateX(120%);
+            transition: transform 0.4s ease;
+            max-width: 350px;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .notification.error {
+            background-color: var(--error);
+            color: white;
+        }
+        
         /* Footer */
         footer {
             background-color: #0a0a0a;
@@ -549,7 +601,6 @@
             font-weight: 700;
             color: var(--white);
             margin-bottom: 20px;
-            cursor: pointer;
         }
         
         .footer-logo span {
@@ -577,7 +628,6 @@
             border-radius: 50%;
             text-decoration: none;
             transition: all 0.3s ease;
-            cursor: pointer;
         }
         
         .social-icons a:hover {
@@ -618,7 +668,6 @@
             color: var(--text-light);
             text-decoration: none;
             transition: all 0.3s ease;
-            cursor: pointer;
         }
         
         .footer-links ul li a:hover {
@@ -638,7 +687,6 @@
             color: var(--primary);
             width: 20px;
             margin-top: 3px;
-            flex-shrink: 0;
         }
         
         .copyright {
@@ -934,10 +982,13 @@
         <i class="fas fa-arrow-up"></i>
     </div>
 
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
     <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="container hero-content">
-            <h1>Surjeet Kumar Singh<br><span>Criminal & Civil Law Advocate</span></h1>
+            <h1>Surjeet Kumar Singh<br><span>Criminal & Civil<br> Advocate</span></h1>
             <p>With years of dedicated legal practice, I provide expert legal representation in criminal and civil cases. Committed to defending your rights and achieving the best possible outcomes through diligent advocacy and strategic legal solutions.</p>
             <a href="#contact" class="cta-button">Schedule a Consultation</a>
         </div>
@@ -954,11 +1005,16 @@
             <div class="about-content">
                 <div class="about-image">
                     <div class="image-frame">
-                        <!-- Placeholder for lawyer image -->
-                        <div style="width:100%; height:100%; background: linear-gradient(135deg, var(--dark-light) 0%, var(--dark) 100%); display:flex; align-items:center; justify-content:center; color:var(--text-light); flex-direction: column;">
-                            <i class="fas fa-user-tie" style="font-size: 120px; color: var(--primary); margin-bottom: 20px;"></i>
-                            <p style="font-size: 1.2rem; color: var(--primary); font-weight: 600;">Advocate Surjeet Kumar Singh</p>
-                        </div>
+                        <!-- Lawyer image with upload functionality -->
+                        <img id="lawyerImage" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='500' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%231e1e1e'/%3E%3Cg transform='translate(100, 50)'%3E%3Crect x='0' y='0' width='200' height='250' fill='%232a2a2a'/%3E%3Ccircle cx='100' cy='80' r='60' fill='%23c19a6b'/%3E%3Ctext x='100' y='90' font-family='Arial' font-size='30' font-weight='bold' text-anchor='middle' fill='%23121212'%3ES%3C/text%3E%3Crect x='50' y='170' width='100' height='20' rx='5' fill='%23c19a6b'/%3E%3Crect x='40' y='200' width='120' height='15' rx='3' fill='%23c19a6b' opacity='0.8'/%3E%3Crect x='60' y='225' width='80' height='15' rx='3' fill='%23c19a6b' opacity='0.6'/%3E%3C/g%3E%3C/svg%3E" alt="Advocate Surjeet Kumar Singh">
+                        
+                        <!-- Upload Button -->
+                        <!-- <button class="upload-image-btn" onclick="document.getElementById('imageUpload').click()">
+                            <i class="fas fa-camera"></i> Upload Photo
+                        </button> -->
+                        
+                        <!-- Hidden File Input -->
+                        <input type="file" id="imageUpload" accept="image/*">
                     </div>
                 </div>
                 
@@ -1192,13 +1248,92 @@
             const caseType = document.getElementById('case').value;
             const message = document.getElementById('message').value;
             
-            // In a real implementation, you would send this data to a server
-            // For demo purposes, we'll just show an alert
-            alert(`Thank you ${name}! Your consultation request has been received. We will contact you at ${phone} or ${email} within 24 hours to schedule your appointment.`);
+            // Form validation
+            if (!name || !phone || !email || !caseType || !message) {
+                showNotification('Please fill in all required fields', 'error');
+                return;
+            }
+            
+            // Validate phone number
+            const phoneRegex = /^[0-9]{10}$/;
+            if (!phoneRegex.test(phone.replace(/\D/g, ''))) {
+                showNotification('Please enter a valid 10-digit phone number', 'error');
+                return;
+            }
+            
+            // Validate email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showNotification('Please enter a valid email address', 'error');
+                return;
+            }
+            
+            // Show success message
+            showNotification(`Thank you ${name}! Your consultation request has been received. We will contact you at ${phone} or ${email} within 24 hours to schedule your appointment.`, 'success');
             
             // Reset form
             consultationForm.reset();
         });
+        
+        // Image upload functionality
+        const imageUpload = document.getElementById('imageUpload');
+        const lawyerImage = document.getElementById('lawyerImage');
+        
+        imageUpload.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            
+            if (!file) return;
+            
+            // Validate file type
+            if (!file.type.match('image.*')) {
+                showNotification('Please select an image file (JPG, PNG, etc.)', 'error');
+                return;
+            }
+            
+            // Validate file size (max 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                showNotification('Image size should be less than 5MB', 'error');
+                return;
+            }
+            
+            const reader = new FileReader();
+            
+            reader.onload = function(event) {
+                lawyerImage.src = event.target.result;
+                showNotification('Profile image updated successfully!', 'success');
+                
+                // Save to localStorage
+                localStorage.setItem('lawyerProfileImage', event.target.result);
+            };
+            
+            reader.readAsDataURL(file);
+        });
+        
+        // Check for saved image in localStorage
+        window.addEventListener('DOMContentLoaded', function() {
+            const savedImage = localStorage.getItem('lawyerProfileImage');
+            if (savedImage) {
+                lawyerImage.src = savedImage;
+            }
+        });
+        
+        // Notification function
+        function showNotification(message, type) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            
+            // Add icon based on type
+            const icon = type === 'success' ? '<i class="fas fa-check-circle"></i>' : '<i class="fas fa-exclamation-circle"></i>';
+            notification.innerHTML = icon + ' ' + message;
+            
+            notification.classList.add('show');
+            
+            // Hide notification after 5 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
         
         // Header scroll effect
         window.addEventListener('scroll', () => {
@@ -1268,11 +1403,6 @@
             el.style.transform = 'translateY(30px)';
             el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
             observer.observe(el);
-        });
-        
-        // Add cursor pointer to all clickable elements
-        document.querySelectorAll('button, a, .logo, .service-card, .experience-item, .footer-logo').forEach(el => {
-            el.style.cursor = 'pointer';
         });
         
         // Initialize scroll position for header
